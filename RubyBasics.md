@@ -12,6 +12,30 @@
   * Use Ruby to write more Ruby 
 
 # Ruby and OOP 
+## Ruby as an Object-Oriented Langauge 
+### _Almost_ everything is an object 
+Pretty much everything in Ruby is an object: 
+* Methods
+* User-defined Classes
+* Modules 
+* Arrays 
+
+There are some exceptions: 
+* Numbers: `Fixnum`, `Rational`, `Float`
+* Text: `String` 
+* Booleans: `True`, `False`
+* Symbols: `Symbol`
+
+#### What is an object? 
+Key Tenants: 
+* Objects have distinct local state 
+* Objects can interact with other objects 
+* Object cannot control other objects 
+
+What is an object? 
+* A collection of references to other objects 
+* defined set of messages that responds 
+* Has internal state 
 ## Defining methods & classes 
 ### Classes 
 * Classes must start with a capital letter, and are (by convention) written in camel case.
@@ -103,31 +127,28 @@ require 'active_support/core_ext/numeric'
 ``` 
 
 ### Duck Typing 
-The idea here is that if "it walks like a duck, talks like a duck, then it must be a duck"
+The idea here is that if "it walks like a duck, talks like a duck, then it must be a duck". Since Ruby is a dynamic langauge, class (and therefor object) definitions are **never** finalized; in other words, we can redefine class functionality at any time. 
 
+This is best understood through an example. In the example below, I am defining a class (`EmptyClass`). This `EmptyClass` has no methods or attributes. I then "re-open" the super-class of all objects (`Object`) and give that a `ping` method, which returns `"pong"`. Now if I instantiate go back to `EmptyClass` and call `ping` again, you will see that that object now has a method (inherited from the super-class `Object`) and does **not** raise a `NoMethodError`. 
+```rb 
+➜ irb
+➜ class EmptyClass; end
+#=> nil
+➜ obj = EmptyClass.new
+#=> #<EmptyClass:0x00007ff023902868>
+➜  obj.ping
+# NoMethodError (undefined method `ping' for #<EmptyClass:0x00007ff023902868>)
+➜ class Object
+➜   def ping
+➜     "pong"
+➜    end
+➜  end
+#=> :ping
+➜  obj.ping
+#=> "pong"
+➜  7.ping
+#=> "pong"
+```
 
-# Ruby as an Object-Oriented Langauge 
-## _Almost_ everything is an object 
-Pretty much everything in Ruby is an object: 
-* Methods
-* User-defined Classes
-* Modules 
-* Arrays 
-
-There are some exceptions: 
-* Numbers: `Fixnum`, `Rational`, `Float`
-* Text: `String` 
-* Booleans: `True`, `False`
-* Symbols: `Symbol`
-
-### What is an object? 
-Key Tenants: 
-* Objects have distinct local state 
-* Objects can interact with other objects 
-* Object cannot control other objects 
-
-What is an object? 
-* A collection of references to other objects 
-* defined set of messages that responds 
-* Has internal state 
+# Constants 
 
