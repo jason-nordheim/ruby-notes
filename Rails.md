@@ -207,6 +207,8 @@ class DogsController < ApplicationController
 end 
 ```
 
+
+
 ### Setup Route
 
 ```rb
@@ -234,10 +236,16 @@ The Rails console (accessed via: `rails c`) is an important tool in the arsenal 
 You can generate code in `rails` by calling the `rails` alias in terminal, and then entering the arguments for what you would like to do 
 ```bash
 # long hand 
-rails generate 
+rails generate controller people
 # short-hand 
-rails g 
+rails g generate controller people 
 ```
+
+If you mess up anything, repeat the command, but substitute delete (`d`) instead of `g`. 
+```bash 
+rails d controller people 
+```
+
 
 # Creating a Migration 
 
