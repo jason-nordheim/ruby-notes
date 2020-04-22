@@ -239,6 +239,17 @@ The Rails console (accessed via: `rails c`) is an important tool in the arsenal 
 * Allowing you to switch between making permanent database changes and running in a sandbox mode to test scripts out
 * To start up the Rails 
 
+## Some fun examples: (In the rails console) 
+Suppose you have a blog website with posts. What if you want to find all of the posts from today? 
+```rb
+# find all the posts created between yesterday and tomorrow 
+Post.where(created_at: Date.yesterday..Date.tomorrow).to_sql
+# => "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"created_at\" BETWEEN '2020-04-21' AND '2020-04-23'"
+
+# we can execute this query by removing the `to_sql` from the end 
+
+```
+
 
 # Beyond the Basics 
 
@@ -265,6 +276,62 @@ rails generate resource Horse
 # short-hand 
 rails g resource Horse 
 ```
+## An example 
+## An example 
+What if I have a blog site and I want to quickly setup that functionality? Well that's something faily commmon, rails can build out the framework for you via a command called `scaffold`. You would use the `scaffold` command like so: 
+```bash 
+rails generate scaffold post title:string body:text
+```
+This will build out functionality for **all** of our CRUD operators for that data model. Let me stop and let's talk a little bit more about that. 
+
+With that one command: `rails generate scaffold post title:string body:text`, I've told Rails: 
+* I have this thing called a `post` that will store something called a `title`, and something else called a `body` 
+* that `title` will have a string datatye - (i.e. it sh)
+* that `body` will have a text datatype 
+
+And with that information Rails has done the following: 
+* It has generated 19 different files and modiefied 1 existing one 
+  1. `db/migrate/20200422194620_create_posts.rb` - Rails created a database migration with the properties of the new object we've told Rails we want to create
+  2. `app/models/post.rb` - Rails created a Model to represent that post
+  3. `test/models/post_test.rb` - Rails created a test from a template to define tests to run related to your new object 
+  4. `test/fixtures/posts.yml` - Rails created a outline of test data to run through your test 
+  5. `app/controllers/posts_controller.rb` it created a controller to handle all of the crud operations for you including: `create`, `update`, `new`, `show`, and `destroy` along with working logic to handle that input. (This is huge!)
+  6. It generated views for each of the CRUD operations: 
+    1. `app/views/posts` - general posts 
+    2. `app/views/posts/index.html.erb` - an index page 
+    3. `app/views/posts/edit.html.erb` - an edit page (allows updating of object information)
+    4. `app/views/posts/show.html.erb` - a page to display object data 
+    5. `app/views/posts/new.html.erb` - a page where an end-user can enter information 
+    6. `app/views/posts/_form.html.erb` - a partial page outlining shared code between the pages, mostly used in the event an error needs to be displayed on that page. 
+  7. `test/controllers/posts_controller_test.rb` - a test file outlining tests for the associated controller 
+  8. `test/system/posts_test.rb` - more tests 
+  9. `app/helpers/posts_helper.rb` - a helper file for running tests 
+  10. `app/views/posts/index.json.jbuilder` - a json option for retrieving objects by index 
+  11. `app/views/posts/show.json.jbuilder` - a json return option for retrieving objects one or multiple object attributes 
+  12. `app/views/posts/_post.json.jbuilder` - defines where to go redirect when returning json data 
+  13. `app/assets/stylesheets/posts.scss` - a scss stylesheet  for the post object 
+  14. `app/assets/stylesheets/scaffolds.scss` - a general scss stylesheet for stuff built as part of the `generate scaffold` 
+
+
+That's 351 lines of code, written for you, for free. It creates all 20 of those files for you, and populates them with **working** code that will enable **ALL** of the CRUD operations. 
+
+But wait... we can do more! 
+
+Let's say we want to make our blog more interactive so we want to add the ability for people to comment on a post... for this we will likely need to store the data in our applications database. We could create a `comment.rb` model, a `comments_controller.rb`, a corresponding view folder, a default view and build all the routes manually, 
+```bash
+rails generate resource comment post:references body:text
+```
+With the command above, do all the stuff I did with `scaffold`, but Rails doesn't generate any views. 
+
+But let's break down what's happening anyway... in one line, I've instructed Rails to build the model `comment.rb` with the attribute `body` with the data-type `text` and that a post `belongs_to` a post object... and Rails has generated the model, along with the standard CRUD operator functionality in the `routes.rb` and `comment_controller.rb` (including methods/actions for `create`, `show`, `update`, `index`, and `destroy`). 
+
+What's crazy is we have the core functionality of a blog now.
+
+
+ 
+
+
+
 
 # Creating a Migration 
 
