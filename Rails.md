@@ -209,7 +209,18 @@ end
 
 
 
-### Setup Route
+# Routing 
+
+## Defining the root page 
+
+In `routes.rb`, use the keyword `root` to define the index page for the site: 
+```rb
+Rails.application.routes.draw do 
+  root = 'home#index' # ==> go to the home controller and execute the 'index" action 
+
+```
+
+## Setup Route
 
 ```rb
 Rails.application.routes.draw do 
@@ -220,7 +231,7 @@ Rails.application.routes.draw do
 end 
 ```
 
-## Rails console 
+# Rails console 
 The Rails console (accessed via: `rails c`) is an important tool in the arsenal of any Rails developer. It gives you a direct connection to your application's ecosystem and lets you perform tasks such as:
 * Running database queries
 * Running application code
@@ -320,3 +331,19 @@ resources :posts, only: [:index, :show]
 | posts | `GET` | `/posts(.:format)` | `posts#index` | 
 | post  | `GET` | `/posts/:id(.:format)` | `posts#show` | 
 
+So the code in our view _could_ go from: 
+```erb
+<!-- without route helpers -->
+<% @posts.each do |post| %>
+  <div><a href='<%= "/posts/#{post.id}" %>'><%= post.title %></a></div>
+<% end %>
+``` 
+to 
+```erb 
+<!-- with route-helpers -->
+<% @posts.each do |post| %>
+  <div><%= link_to post.title, "/posts/#{post.id}" %></div>
+<% end %>
+``` 
+
+[Link to lab](https://github.com/jason-nordheim/rails-url-helpers-readme-denver-web-033020)
