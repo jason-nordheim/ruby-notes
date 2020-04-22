@@ -328,10 +328,6 @@ But let's break down what's happening anyway... in one line, I've instructed Rai
 What's crazy is we have the core functionality of a blog now.
 
 
- 
-
-
-
 
 # Creating a Migration 
 
@@ -414,3 +410,33 @@ to
 ``` 
 
 [Link to lab](https://github.com/jason-nordheim/rails-url-helpers-readme-denver-web-033020)
+
+# Active Record 
+## Parent Child Relationships 
+You can create a parent child relationship using ActiveRecord using the methods: `has_many` and `belongs_to`. In order for this to be bi-directional, both classes must use these methods. 
+
+An example: 
+
+```rb 
+# /app/models/post.rb 
+class Posts < ActiveRecord 
+  has_many :comments #plural 
+end 
+
+# /app/models/comment.rb 
+class Comment < ActiveRecord
+  belongs_to :post  # singular 
+end 
+
+# and in the migration would look like" 
+class CreateComments < ActiveRecord::Migration[6.0]
+  def change
+    create_table :comments do |t|
+      t.references :post, null: false, foreign_key: true
+      t.text :body
+
+      t.timestamps
+    end
+  end
+end
+``` 
