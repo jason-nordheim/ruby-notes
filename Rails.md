@@ -310,9 +310,13 @@ What this is essentially saying is; "find the best way to a controller with this
 In order to get routes for the posts, we need to handle `GET` on `/posts(.:format)` and direct that to the `posts#index` action as well as `GET` for `/posts/:id(.:format)` to the `posts#show` method. 
 
 In the `routes.rb` that would look 
-
-
 ```rb
-# config/routes.rb 
+# config/routes.rb
 resources :posts, only: [:index, :show]
 ```
+
+| Prefix | HTTP Verb | Route Path | Controller Action | 
+|:-------|:----------|:-----------|:------------------| 
+| posts | `GET` | `/posts(.:format)` | `posts#index` | 
+| post  | `GET` | `/posts/:id(.:format)` | `posts#show` | 
+
