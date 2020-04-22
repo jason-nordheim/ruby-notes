@@ -232,6 +232,7 @@ The Rails console (accessed via: `rails c`) is an important tool in the arsenal 
 # Beyond the Basics 
 
 
+
 # Rails Generate 
 You can generate code in `rails` by calling the `rails` alias in terminal, and then entering the arguments for what you would like to do 
 ```bash
@@ -246,6 +247,13 @@ If you mess up anything, repeat the command, but substitute delete (`d`) instead
 rails d controller people 
 ```
 
+If you want to generate a model and a controller (for an API), you can use the command: 
+```bash 
+# long-hand
+rails generate resource Horse 
+# short-hand 
+rails g resource Horse 
+```
 
 # Creating a Migration 
 
@@ -263,9 +271,48 @@ rails g migration create_table_x name:string, age: integer
 | `age:integer` | attribute: type | 
 
 
-# Rails Commands:
+# General Rails Commands:
 
 `rails -T` - lists all the rails commands 
 `rails c` / `rails console` - launches interactive console to test the rails database 
 `rails s` / `rails server` - launches your rails server. 
 `rails routes` - displays the routes that the current rails app can handle 
+
+
+# Rails URL Helpers 
+Rails is meant to be flexible. As a result, there are typically a number of ways to accomplish the same goals. Routes are a great example of how this principle operates in a Rails app. You can route via a hard-coded path, or a route-helper (more flexible). 
+
+In code that looks like this: 
+```rb
+# hard-coded path 
+"/posts/#{@post.id}" 
+# route helper 
+post_path(@post)
+```
+What this is essentially saying is; "find the best way to a controller with this thing called a `post` based on looking at the instance `@post`. 
+
+## Why use URL Helpers 
+
+1. Route helpers are more dynamic - they are methods, not simply strings; since they are methods, that means if something changes with the route, often the code will not need to be changed as the method will still work. 
+
+2. Route helpers clean up code - the code for a route-helper is much more readable. 
+  * note: _you cannot use the helper methods within your model files_ 
+
+3. Route helpers provide a more flexible mechanism for passing arguments - Without route-helpers, we would have to declare routes with string interpolation:
+  * without route-helpers: `posts/<%= post.id %>?opt_in=true"` 
+  * with route-helpers: `post_path(post, opt_in: true)` 
+
+4. Route helpers directly translate into HTML-friendly paths - Using route-helpers eliminates unexpected characters in the URL, making redirection and redering more reliable. 
+
+## Implementing Route Helpers 
+
+### Configure the route 
+In order to get routes for the posts, we need to handle `GET` on `/posts(.:format)` and direct that to the `posts#index` action as well as `GET` for `/posts/:id(.:format)` to the `posts#show` method. 
+
+In the `routes.rb` that would look 
+
+
+```rb
+# config/routes.rb 
+resources :posts, only: [:index, :show]
+```
