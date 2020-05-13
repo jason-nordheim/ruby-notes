@@ -33,6 +33,9 @@ The controllers connect the models, views, and routes or in other words; it mana
 * The view looks to the controller and only has access to the instance variables that the controller makes available. Those instance variables will contain any/all data coming in from the database.
 * The routes file looks to the controller and ensures that the methods in the controller match the items in the routes file.
 
+###### Controller Variable Scope 
+`@model_name` variables defined in the controller are scoped so that the view's have access to them 
+
 ##### Models 
 ##### Views 
 In a Rails application, the view files should contain the least amount of logic of any of the files in the model-view-controller architecture. The role of the view is to simply render whatever it is sent from the database.
@@ -440,3 +443,9 @@ class CreateComments < ActiveRecord::Migration[6.0]
   end
 end
 ``` 
+
+# Partials 
+
+`.html.erb` files that are sub templates of a full-view --> they represent part of what is being displayed, and as such are never displayed on their own, but rather alongside a dedicated view. 
+* Enables re-use of repetitive displayed components 
+* Allows for greater seperation of concerns
